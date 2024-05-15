@@ -12,19 +12,32 @@ app.get('/', (req, res) => {
         tasks
     })
 })
-app.post('/insartTask',(req,res)=>{
+app.post('/insartTask', (req, res) => {
+    console.log(req.query.editTask);
     tasks.push(req.body.task)
     return res.redirect('/')
 })
-app.get('/editTask',(req,res)=>{
-    const Id=req.query.Id
-    let data=tasks.filter((task,index)=>{
-        return Id==index
+app.get('/editTask', (req, res) => {
+    const Id = req.query.Id
+    let data = tasks.filter((task, index) => {
+        return Id == index
     })
-    console.log(data[0]);
-    return res.render('edit',{
-        data
+    // console.log(data[0]);
+    return res.render('edit', {
+        data, Id
     })
+})
+app.post('/editTask', (req, res) => {
+    const {editTask} = req.body
+    const Id = req.query.Id
+    // console.log(editTask, Id);
+    tasks.filter((task, index) => {
+        if (Id == index) {
+             tasks[index] = editTask
+        }
+        return task
+    })
+    return res.redirect('/')
 })
 app.get('/deletTask', (req, res) => {
     const Id = req.query.Id
